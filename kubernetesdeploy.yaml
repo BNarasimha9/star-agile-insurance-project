@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insurence-eta-deploy
+  labels:
+    app: insurence-eta-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insurence-eta-app
+  template:
+    metadata:
+      labels:
+        app: insurence-eta-app
+    spec:
+      containers:
+      - name: insurence-eta-container
+        image: bnarasimha582/insurence-eta-app
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insurence-eta-np-service
+  labels:
+    app: insurence-eta-app
+spec:
+  selector:
+    app: insurence-eta-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31030  
+    port: 8082
+    targetPort: 8082
